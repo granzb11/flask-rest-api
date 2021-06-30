@@ -1,0 +1,20 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#93f63c",
+        "activityBar.activeBorder": "#489af7",
+        "activityBar.background": "#93f63c",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#489af7",
+        "activityBarBadge.foreground": "#15202b",
+        "statusBar.background": "#78f40b",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#60c309",
+        "titleBar.activeBackground": "#78f40b",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#78f40b99",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#78f40b",
+    "python.pythonPath": "/Users/gustavoranz/opt/anaconda3/envs/rest-api/bin/python"
+}
