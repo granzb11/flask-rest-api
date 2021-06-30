@@ -15,10 +15,8 @@ class Item(Resource):
         Returns:
             Dictionary: Item found
         """
-        for item in items:
-            if item['name'] == name:
-                return item
-        return {'item': None}, 404 # 404 is for not found
+        item = next(filter(lambda x: x['name'] == name, items), None)
+        return {'item': item}, 200 if item else 404 # 404 is for not found
 
     def post(self, name):
         """Creates an item
@@ -32,6 +30,9 @@ class Item(Resource):
         # if the content-type is not set or the body of the request is not in JSON format, we will get a failure in line 16. To avoid these failures we can use the following 2 solutions.
         # force=True - this means that you do not need the "content-type" to be set, it will look in the content and format it even if the content-type is not set. This is not recommended as then you will never look at the header and ALWAYS perform the processing to format the body into JSON
         # silent=True - this does not give an error and returns None
+        if next(filter(lambda x: x['name'] == name, items), None) is not None:
+            return {'message': "An item with name '{}' already exists".format(name)}, 400 # 400 is for a bad request because the user should've already known that an item with that name already exists
+
         data = request.get_json(force=True)
         item = {'name': name, 'price': data['price']}
         items.append(item)
