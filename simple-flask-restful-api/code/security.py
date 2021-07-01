@@ -1,9 +1,7 @@
-from werkzeug.security import safe_str_cmp # for safe string comparison for passwords
+from werkzeug.security import safe_str_cmp  # for safe string comparison for passwords
 from user import User
 
-users = [
-    User(1, 'bob', 'asdf')
-]
+users = [User(1, "bob", "asdf")]
 
 # stores names as the key
 username_mapping = {u.username: u for u in users}
@@ -21,6 +19,7 @@ userid_mapping = {u.id: u for u in users}
 # userid_mapping[1]
 # We do this to make finding our users much quicker instead of iterating through the whole list
 
+
 def authenticate(username, password):
     """Authentication
 
@@ -32,6 +31,7 @@ def authenticate(username, password):
     if user and safe_str_cmp(user.password, password):
         return user
 
+
 def identity(payload):
     """Special function for Flask-JWT
     Takes in a payload which is contents of JWT token and we will extract out the userid from payload and once we have that we can retrieve that specific user
@@ -39,5 +39,5 @@ def identity(payload):
     Args:
         payload (str)): JWT Token Contents
     """
-    user_id = payload['identity']
+    user_id = payload["identity"]
     return userid_mapping.get(user_id, None)
