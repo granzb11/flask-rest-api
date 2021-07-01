@@ -2,6 +2,9 @@ from flask import Flask, request
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
+
+# this key should be secured somewhere, not within our code, don't check into version control
+app.secret_key = 'gustavo'
 api = Api(app)
 
 items = []
