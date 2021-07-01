@@ -3,6 +3,7 @@ from flask_restful import Resource, Api, reqparse
 from flask_jwt import JWT, jwt_required
 
 from security import authenticate, identity
+from user import UserRegister
 
 app = Flask(__name__)
 
@@ -27,7 +28,7 @@ class Item(Resource):
         "price", type=float, required=True, help="This field cannot be left blank!"
     )
 
-    @jwt_required() # only adding to this function to make testing easier/quicker
+    @jwt_required()  # only adding to this function to make testing easier/quicker
     def get(self, name):
         """Return back item based on name
 
@@ -95,6 +96,7 @@ class ItemList(Resource):
 
 api.add_resource(Item, "/item/<string:name>")  # http://127.0.0.1:5000/item/<>
 api.add_resource(ItemList, "/items")
+api.add_resource(UserRegister, "/register")
 
 if __name__ == "__main__":
     app.run(debug=True)  # important to mention debug=True

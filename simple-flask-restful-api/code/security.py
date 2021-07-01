@@ -27,7 +27,7 @@ def authenticate(username, password):
         username (str): Username
         password (str): Password
     """
-    user = username_mapping.get(username, None)
+    user = User.find_by_username(username)
     if user and safe_str_cmp(user.password, password):
         return user
 
@@ -40,4 +40,4 @@ def identity(payload):
         payload (str)): JWT Token Contents
     """
     user_id = payload["identity"]
-    return userid_mapping.get(user_id, None)
+    return User.find_by_id(user_id)
