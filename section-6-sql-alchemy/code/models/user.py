@@ -1,6 +1,4 @@
-
 # third-party imports
-import sqlite3
 from db import db
 
 class UserModel(db.Model):
@@ -19,40 +17,34 @@ class UserModel(db.Model):
         self.username = username
         self.password = password
 
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_from_db(self):
+        db.session.delete(self)
+        db.session.commit()        
+
     @classmethod
     def find_by_username(cls, username):
-        # creating db connection
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
+        """Find user by username
 
-        # running query
-        query = f"SELECT * FROM {cls.TABLE_NAME} WHERE username=?"
-        result = cursor.execute(query, (username,))
-        row = result.fetchone()
-        if row:
-            user = cls(*row)
-        else:
-            user = None
+        Args:
+            username (string): username
 
-        # close connection
-        connection.close()
-        return user
+        Returns:
+            UserModel: UserModel object
+        """
+        return cls.query.filter_by(username=username).first()
 
     @classmethod
-    def find_by_id(cls, id):
-        # creating db connection
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
+    def find_by_id(cls, _id):
+        """Find user by id
 
-        # running query
-        query = f"SELECT * FROM users WHERE id=?"
-        result = cursor.execute(query, (id,))
-        row = result.fetchone()
-        if row:
-            user = cls(*row)
-        else:
-            user = None
+        Args:
+            id (string): id of user
 
-        # close connection
-        connection.close()
-        return user
+        Returns:
+            UserModel: UserModel object
+        """
+        return cls.query.filter_by(id=_id).first()

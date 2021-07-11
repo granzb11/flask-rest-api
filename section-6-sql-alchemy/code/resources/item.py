@@ -52,7 +52,7 @@ class Item(Resource):
          # 201 is used for "created", 202 is when you are delaying the creation because maybe it takes 10 mins to create your object. At that point the client gets a successful return code and can move along
 
     def delete(self, name):
-        item = Item.find_by_name(name)
+        item = ItemModel.find_by_name(name)
         if item:
             item.delete_from_db()
 
@@ -69,28 +69,9 @@ class Item(Resource):
             item.price = data['price']
 
         item.save_to_db()
-        return {"item": updated_item.json()}
-
+        return {"item": item.json()}
 
 class ItemList(Resource):
-    @classmethod
-    def convert_tuples_to_dict(cls, keys: tuple, list_of_tuples: list) -> dict:
-        """Converts list of tuples to dictionary
-        # https://www.geeksforgeeks.org/python-convert-list-tuples-dictionary/
-
-        Args:
-            tuples_list (list): list of tuples
-
-        Returns:
-            dict: dictionary of conversion
-        """
-        tuples_dict = {}
-        for tuple in list_of_tuples:
-            # keys - (name, price)
-            # tuple - (chair, 11.99)
-            # temp_dict - {"name": "chair", "price": "11.99"}
-            temp_dict = dict(zip(keys, tuple))
-
     def get(self):
         """Returns back a list of items
 
