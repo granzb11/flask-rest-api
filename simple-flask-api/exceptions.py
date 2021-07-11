@@ -1,2 +1,0 @@
-class StoreNotFound(ValueError):
-    pass

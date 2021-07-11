@@ -1,11 +1,18 @@
+
+# third-party imports
 import sqlite3
-from flask_restful import Resource, reqparse
+from db import db
 
-
-class User:
+class UserModel(db.Model):
     """User Class for user data"""
 
-    TABLE_NAME = "users"
+    # setting this variable to tell SQLAlchemy our table name
+    __tablename__ = 'users'
+
+    # setting columns for SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80))
+    password = db.Column(db.String(80))
 
     def __init__(self, _id, username, password):
         self.id = _id
@@ -49,33 +56,3 @@ class User:
         # close connection
         connection.close()
         return user
-
-
-class UserRegister(Resource):
-    parser = reqparse.RequestParser()
-    parser.add_argument(
-        "username", type=str, required=True, help="This field cannot be left blank!"
-    )
-    parser.add_argument(
-        "password", type=str, required=True, help="This field cannot be left blank!"
-    )
-
-    def post(self):
-        data = UserRegister.parser.parse_args()
-
-        # check if user already exists
-        if User.find_by_username(data["username"]):
-            return {"message": "User with that username already exists."}, 400
-
-        connection = sqlite3.connect("data.db")
-        cursor = connection.cursor()
-
-        # execute query
-        query = "INSERT INTO users VALUES (NULL, ?, ?)"
-        cursor.execute(query, (data["username"], data["password"]))
-
-        # commit and close connection
-        connection.commit()
-        connection.close()
-
-        return {"message": "User created successfully"}, 201
