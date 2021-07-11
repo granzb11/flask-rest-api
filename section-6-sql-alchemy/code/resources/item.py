@@ -1,4 +1,3 @@
-import sqlite3
 from flask_restful import Resource, reqparse
 from flask_jwt import jwt_required
 
@@ -78,22 +77,7 @@ class ItemList(Resource):
         Returns:
             Dictionary: List of items
         """
-        items = []
-        connection = sqlite3.connect("data.db")
-        # this is to get the column names with results
-        connection.row_factory = sqlite3.Row
-        cursor = connection.cursor()
-
-        query = "SELECT * FROM items"
-        result = cursor.execute(query)
-        rows = result.fetchall()
-
-        # close connection
-        connection.close()
-
-        # convert sqlite row object to dicitonaries
-        # add dictionary to list of dicitonaries
-        for row in rows:
-            items.append(dict(row))
-
-        return {"items": items}, 200
+        # query.all() returns all objects in table
+        # list comprehension to get json of each item
+        # return {"items": list(map(lambda x: x.json(), ItemModel.query.all()))}
+        return {"items": [item.json() for item in ItemModel.query.all()]}
