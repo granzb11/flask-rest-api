@@ -10,10 +10,18 @@ class ItemModel(db.Model):
     name = db.Column(db.String(80))
     price = db.Column(db.Float(precision=2))
 
+    # setting up relationship  between ItemModel and StoreModel,
+    # normally we would have to perform a join to get back an item tied to a specific store
+    # with sql alchemy, setting up that relationship will create that link and thus we won't
+    # need to do any crazy joins
+    store_id = db.Column(db.Integer, db.models.ForeignKey('stores.id'))
+    store = db.relationship('StoreModel')
+
     def __init__(self, name: str, price: float):
         self.name = name
         self.price = price
-
+        self.store_id = store_id
+        
     def json(self):
         return {"name": self.name, "price": self.price}
 

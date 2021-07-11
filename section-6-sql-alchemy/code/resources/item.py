@@ -10,6 +10,9 @@ class Item(Resource):
     parser.add_argument(
         "price", type=float, required=True, help="This field cannot be left blank!"
     )
+        parser.add_argument(
+        "store_id", type=int, required=True, help="Every item needs a store id."
+    )
 
     @jwt_required()  # only adding to this function to make testing easier/quicker
     def get(self, name):
@@ -40,7 +43,7 @@ class Item(Resource):
             return {"message": f"An item with name {name} already exists"}, 404
 
         data = Item.parser.parse_args()
-        item = ItemModel(name, data['price'])
+        item = ItemModel(name, **data)
 
         try:
             item.save_to_db()
@@ -63,9 +66,11 @@ class Item(Resource):
 
         # example of "named style" for query formation vs question mark style
         if item is None: # item does not exist in database
-            item = ItemModel(name, data['price'])
+            item = ItemModel(name, **data)
+            # item = ItemModel(name, data['price'], data['store_id'])
         else: # item does exist in database
             item.price = data['price']
+            item.store_id = data['store_id']
 
         item.save_to_db()
         return {"item": item.json()}
