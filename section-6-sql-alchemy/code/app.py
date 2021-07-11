@@ -21,12 +21,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.secret_key = "gustavo"
 api = Api(app)
 
-# so JWT creates an /auth endpoint, this endpoint takes in username and password
-# JWT will take that username and password and pass it to our authenticate() method in security.py
-# our authetnicate method will return the user and with that user JWT will create a JW token and the endpoint will return that
-# This is the auth token that our users will use within their headers to authenticate with us
-# So the next API call the user performs, will use that token. JWT will then grab that and call identity() from security.py
-# with that we will authenticate our users going forward
+@app.before_first_request
+# this will run before any request is served and it's going to create the tables for us if they don't already exist
+def crate_tables():
+    db.create_all()
+
 jwt = JWT(app, authenticate, identity)  # creates new endpoint /auth
 
 api.add_resource(Item, "/item/<string:name>")  # http://127.0.0.1:5000/item/<>
