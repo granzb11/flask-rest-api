@@ -1,29 +1,24 @@
+# third-party imports
 from db import db
 
 # we are extending the Model class here and what that's going to do is tell SQLAlchemy that this class here
 # are things that we are going to be saving to a database and retrieving from a database
 # It's going to create that mapping between the database and the object/class
-class ItemModel(db.Model):
-    __tablename__ = "items"
+class StoreModel(db.Model):
+    __tablename__ = "stores"
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80))
-    price = db.Column(db.Float(precision=2))
 
-    # setting up relationship  between ItemModel and StoreModel,
-    # normally we would have to perform a join to get back an item tied to a specific store
-    # with sql alchemy, setting up that relationship will create that link and thus we won't
-    # need to do any crazy joins
-    store_id = db.Column(db.Integer, db.ForeignKey("stores.id"))
-    store = db.relationship("StoreModel")
+    # self.items is no longer a list of items but instead becomes a query builder
+    # TODO (Gustavo) need to do some more reading around this, short explanation during video 102
+    items = db.relationship("ItemModel", lazy="dynamic")
 
-    def __init__(self, name: str, price: float, store_id: int):
+    def __init__(self, name: str):
         self.name = name
-        self.price = price
-        self.store_id = store_id
 
     def json(self):
-        return {"name": self.name, "price": self.price}
+        return {"id": self.id, "name": self.name, "items": [item.json() for item in self.items.all()]}
 
     def save_to_db(self):
         db.session.add(self)

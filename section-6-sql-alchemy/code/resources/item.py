@@ -9,7 +9,7 @@ class Item(Resource):
     parser.add_argument(
         "price", type=float, required=True, help="This field cannot be left blank!"
     )
-        parser.add_argument(
+    parser.add_argument(
         "store_id", type=int, required=True, help="Every item needs a store id."
     )
 
@@ -50,7 +50,7 @@ class Item(Resource):
             return {"message": "An error occured inserting the item."}, 500
 
         return item.json(), 201
-         # 201 is used for "created", 202 is when you are delaying the creation because maybe it takes 10 mins to create your object. At that point the client gets a successful return code and can move along
+        # 201 is used for "created", 202 is when you are delaying the creation because maybe it takes 10 mins to create your object. At that point the client gets a successful return code and can move along
 
     def delete(self, name):
         item = ItemModel.find_by_name(name)
@@ -64,15 +64,16 @@ class Item(Resource):
         item = ItemModel.find_by_name(name)
 
         # example of "named style" for query formation vs question mark style
-        if item is None: # item does not exist in database
+        if item is None:  # item does not exist in database
             item = ItemModel(name, **data)
             # item = ItemModel(name, data['price'], data['store_id'])
-        else: # item does exist in database
-            item.price = data['price']
-            item.store_id = data['store_id']
+        else:  # item does exist in database
+            item.price = data["price"]
+            item.store_id = data["store_id"]
 
         item.save_to_db()
         return {"item": item.json()}
+
 
 class ItemList(Resource):
     def get(self):

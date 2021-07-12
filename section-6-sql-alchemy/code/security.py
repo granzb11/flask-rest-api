@@ -1,25 +1,6 @@
 from werkzeug.security import safe_str_cmp  # for safe string comparison for passwords
 from models.user import UserModel
 
-users = [UserModel(1, "bob", "asdf")]
-
-# stores names as the key
-username_mapping = {u.username: u for u in users}
-userid_mapping = {u.id: u for u in users}
-
-# stores IDs as the key
-# line 9 does the same thing but instead with set comprehension
-# userid_mapping = { 1: {
-#     'id': 1,
-#     'username': 'bob',
-#     'password': 'asdf'
-# }}
-
-# username_mapping['bob']
-# userid_mapping[1]
-# We do this to make finding our users much quicker instead of iterating through the whole list
-
-
 def authenticate(username, password):
     """Authentication
 
@@ -30,7 +11,6 @@ def authenticate(username, password):
     user = UserModel.find_by_username(username)
     if user and safe_str_cmp(user.password, password):
         return user
-
 
 def identity(payload):
     """Special function for Flask-JWT
