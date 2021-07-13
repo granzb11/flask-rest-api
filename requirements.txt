@@ -3,3 +3,4 @@ Flask-JWT
 Flask-RESTful
 Flask-SQLAlchemy
 uwsgi
+psycopg2 # used to interact with postgres, sqlalchemy will use this to interact with postgress
