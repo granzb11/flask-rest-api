@@ -19,12 +19,10 @@ app = Flask(__name__)
 # the extension flask SQLAlchemy was tracking every change that we made to the SQLAlchemy session and took some resources
 # Now we're turning it off because SQLAlchemy itself, the main library, has it's own miodification tracker
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL_V2', 'sqlite:///data.db')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL_V2', 'postgresql://onffztdoyhoxne:42dd0d0a657a920dc0f5dc145879e6315fb25b225358f41791d00c473b1636ce@ec2-54-157-100-65.compute-1.amazonaws.com:5432/ddcjtk1ehp9kq8')
 # this key should be secured somewhere, not within our code, don't check into version control
 app.secret_key = "gustavo"
 api = Api(app)
-
-
 
 jwt = JWT(app, authenticate, identity)  # creates new endpoint /auth
 
