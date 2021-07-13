@@ -1,3 +1,5 @@
+import os
+
 # third-party imports
 from flask import Flask
 from flask_restful import Api
@@ -17,7 +19,7 @@ app = Flask(__name__)
 # the extension flask SQLAlchemy was tracking every change that we made to the SQLAlchemy session and took some resources
 # Now we're turning it off because SQLAlchemy itself, the main library, has it's own miodification tracker
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL_V2', 'sqlite:///data.db')
 # this key should be secured somewhere, not within our code, don't check into version control
 app.secret_key = "gustavo"
 api = Api(app)
