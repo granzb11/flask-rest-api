@@ -23,11 +23,6 @@ app.secret_key = "gustavo"
 api = Api(app)
 
 
-@app.before_first_request
-# this will run before any request is served and it's going to create the tables for us if they don't already exist
-def crate_tables():
-    db.create_all()
-
 
 jwt = JWT(app, authenticate, identity)  # creates new endpoint /auth
 
@@ -38,9 +33,6 @@ api.add_resource(StoreList, "/stores")
 
 api.add_resource(UserRegister, "/register")
 
-db.init_app(app)
-app.run(debug=True)
-
-# if __name__ == "__main__":
-#     db.init_app(app)
-#     app.run(debug=True)  # important to mention debug=True
+if __name__ == "__main__":
+    db.init_app(app)
+    app.run(debug=True)  # important to mention debug=True
